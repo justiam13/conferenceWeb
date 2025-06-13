@@ -31,7 +31,7 @@ app.use('/api/footer', footerRoutes);
 const dashboardRoutes = require('./routes/dashboardRoutes');
 app.use('/api/dashboard', dashboardRoutes);
 const authRoutes = require('./routes/authRoutes');
-app.use('/api/register', authRoutes);
+app.use('/api', authRoutes);
 
 // NEW: Test CORS route
 app.get('/api/test-cors', (req, res) => {

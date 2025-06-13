@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TextField, Button, Typography, Box, Paper, Alert } from '@mui/material';
 import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ const Login = () => {
   const [success, setSuccess] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,16 +27,13 @@ const Login = () => {
 
     try {
       const response = await api.post('/login', formData);
-      // Assuming your backend sends a token upon successful login
       const { token } = response.data;
 
-      // Store the token (e.g., in localStorage)
-      localStorage.setItem('token', token);
+      await login(token);
 
       setSuccess('Login successful! Redirecting...');
       console.log('Login successful:', response.data);
       setTimeout(() => {
-        // Redirect to dashboard or home page after successful login
         navigate('/'); 
       }, 1000);
     } catch (err) {
